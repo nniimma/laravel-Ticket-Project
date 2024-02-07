@@ -9,7 +9,7 @@
         </p>
     </header>
 
-    <form method="post" action="{{ route('avatar.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('avatar.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('PATCH')
 
@@ -17,7 +17,7 @@
             <x-input-label for="avatar" :value="__('Avatar')" />
             <x-text-input id="avatar" name="avatar" type="file" class="mt-1 block w-full" :value="old('avatar', $user->avatar)" required
                 autofocus autocomplete="avatar" />
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
         </div>
 
         <div class="flex items-center gap-4">

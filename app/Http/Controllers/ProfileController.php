@@ -60,6 +60,11 @@ class ProfileController extends Controller
 
     public function avatarUpdate(Request $request)
     {
+        $request->validate([
+            'avatar' => 'required|image'
+        ]);
+
+
         return redirect()->route('profile.edit');
     }
 }
