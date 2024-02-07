@@ -64,6 +64,9 @@ class ProfileController extends Controller
             'avatar' => 'required|image'
         ]);
 
+        $path = $request->file('avatar')->store('avatars');
+
+        auth()->user()->update(['avatar' => storage_path('app') . "/$path"]);
 
         return redirect()->route('profile.edit');
     }
