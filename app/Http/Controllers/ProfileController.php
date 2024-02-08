@@ -64,9 +64,10 @@ class ProfileController extends Controller
             'avatar' => 'required|image'
         ]);
 
-        $path = $request->file('avatar')->store('avatars');
+        // ! in store the second option is the disk that we want to save to:
+        $path = $request->file('avatar')->store('avatars', 'public');
 
-        auth()->user()->update(['avatar' => storage_path('app') . "/$path"]);
+        auth()->user()->update(['avatar' => "/$path"]);
 
         return redirect()->route('profile.edit');
     }
