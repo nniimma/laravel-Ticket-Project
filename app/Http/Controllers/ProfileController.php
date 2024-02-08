@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -66,6 +67,12 @@ class ProfileController extends Controller
 
         // ! in store the second option is the disk that we want to save to:
         $path = $request->file('avatar')->store('avatars', 'public');
+        // ? another way of getting the path:
+        // todo: $path = Storage::disk('public')->put('avatars', $request->file('avatar'));
+
+        if ($oldAvatar = $request->user()->avatar) {
+            Storage::disk('public')->delete($oldAvatar);
+        }
 
         auth()->user()->update(['avatar' => "/$path"]);
 

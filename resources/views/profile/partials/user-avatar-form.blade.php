@@ -1,8 +1,10 @@
 <section>
     <header>
-        @auth
-            <img style="height: 50px; width: 50px; border-radius: 50%;" src="{{ '/storage' . $user->avatar }}" alt="">
-        @endauth
+        @if ($user->avatar)
+            <img style="height: 50px; width: 50px; border-radius: 50%;" src="{{ '/storage' . $user->avatar }}"
+                alt="">
+        @endif
+
 
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
             User Avatar
