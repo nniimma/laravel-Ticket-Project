@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use OpenAI\Laravel\Facades\OpenAI;
+use Laravel\Socialite\Facades\Socialite;
 
 
 /*
@@ -43,4 +44,17 @@ Route::get('openai', function () {
     ]);
 
     echo $result->choices[0]->message->content; // Hello! How can I assist you today?
+});
+
+
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('github')->redirect();
+});
+
+Route::get('/auth/callback', function () {
+    $user = Socialite::driver('github')->user();
+
+    dd($user);
+
+    // $user->token
 });
