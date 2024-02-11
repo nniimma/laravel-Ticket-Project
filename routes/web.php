@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use OpenAI\Laravel\Facades\OpenAI;
 use Laravel\Socialite\Facades\Socialite;
@@ -47,14 +49,24 @@ Route::get('openai', function () {
 });
 
 
-Route::get('/auth/redirect', function () {
+Route::post('/auth/redirect', function () {
     return Socialite::driver('github')->redirect();
-});
+})->name('login.github');
 
 Route::get('/auth/callback', function () {
-    $user = Socialite::driver('github')->user();
+    $githubUser = Socialite::driver('github')->user();
 
-    dd($user);
 
-    // $user->token
+    //! firstOrCreate bring the data if exists
+    //! updateOrCreate update the data if exists
+    $user = User::firstOrCreate([
+        'email' => $githubUser->email
+    ], [
+        'username' => $githubUser->name,
+        'password' => 'password',
+    ]);
+
+    Auth::login($user);
+
+    return redirect()->route('dashboard');
 });
