@@ -15,4 +15,6 @@ class Ticket extends Model
         'attachment',
         'user_id'
     ];
+
+    protected $dates = ['created_at'];
 }

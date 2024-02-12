@@ -1,17 +1,20 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("You're logged in!") }}
-                </div>
+    <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
+        <div class="flex justify-between w-full sm:max-w-xl">
+            <h1 class="text-white text-lg font-bold">Support Tickets</h1>
+            <div>
+                <a href="{{ route('ticket.create') }}" class="bg-white rounded-lg p-2">Create New</a>
             </div>
+        </div>
+        <div class="w-full sm:max-w-xl mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+            @forelse ($tickets as $ticket)
+                <div class="text-white flex justify-between py-4">
+                    <a href="{{ route('ticket.show', $ticket->id) }}">{{ $ticket->title }}</a>
+                    <p>{{ $ticket->created_at }}</p>
+                </div>
+            @empty
+                <p class="text-white">You don't have any support ticket yet.</p>
+            @endforelse
         </div>
     </div>
 </x-app-layout>

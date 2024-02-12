@@ -6,6 +6,7 @@ use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -16,7 +17,8 @@ class TicketController extends Controller
      */
     public function index()
     {
-        //
+        $tickets =  DB::select('select * from tickets');
+        return view('dashboard', ['tickets' => $tickets]);
     }
 
     /**
@@ -49,7 +51,7 @@ class TicketController extends Controller
 
 
 
-        return response()->redirectToRoute('ticket.index');
+        return response()->redirectToRoute('dashboard');
     }
 
     /**
@@ -57,7 +59,7 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        //
+        return view('ticket.show', compact('ticket'));
     }
 
     /**
@@ -81,6 +83,7 @@ class TicketController extends Controller
      */
     public function destroy(Ticket $ticket)
     {
-        //
+        $ticket->delete();
+        return redirect()->route('dashboard');
     }
 }
