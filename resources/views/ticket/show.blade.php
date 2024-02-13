@@ -34,7 +34,7 @@
                             @csrf
                             @method('patch')
                             <input type="hidden" name="status" value="rejected" />
-                            <x-primary-button class="ml-2">Reject</x-primary-button>
+                            <x-primary-button style="margin-left: 5px">Reject</x-primary-button>
                         </form>
                     </div>
                 @else
