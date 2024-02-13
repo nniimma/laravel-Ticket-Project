@@ -41,12 +41,7 @@ class TicketController extends Controller
         ]);
 
         if ($request->file('attachment')) {
-            $extention = $request->file('attachment')->extension();
-            $contents = file_get_contents($request->file('attachment'));
-            $filename = Str::random(25);
-            $path = "attachments/$filename.$extention";
-            Storage::disk('public')->put($path, $contents);
-            $ticket->update(['attachment' => $path]);
+            $this->storeAttachment($request, $ticket);
         }
 
 
@@ -67,7 +62,7 @@ class TicketController extends Controller
      */
     public function edit(Ticket $ticket)
     {
-        //
+        return view('ticket.edit', compact('ticket'));
     }
 
     /**
@@ -75,7 +70,17 @@ class TicketController extends Controller
      */
     public function update(UpdateTicketRequest $request, Ticket $ticket)
     {
-        //
+        $ticket->update([
+            'title' => $request->title,
+            'description' => $request->description
+        ]);
+
+        if ($request->file('attachment')) {
+            Storage::disk('public')->delete($ticket->attachment);
+            $this->storeAttachment($request, $ticket);
+        }
+
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -85,5 +90,15 @@ class TicketController extends Controller
     {
         $ticket->delete();
         return redirect()->route('dashboard');
+    }
+
+    protected function storeAttachment($request, $ticket)
+    {
+        $extention = $request->file('attachment')->extension();
+        $contents = file_get_contents($request->file('attachment'));
+        $filename = Str::random(25);
+        $path = "attachments/$filename.$extention";
+        Storage::disk('public')->put($path, $contents);
+        $ticket->update(['attachment' => $path]);
     }
 }

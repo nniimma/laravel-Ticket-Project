@@ -10,6 +10,7 @@ class Textarea extends Component
 {
     /**
      * Create a new component instance.
+     * ! to add default value to text area we use here: line 15
      */
     public function __construct(public string $default = '')
     {
