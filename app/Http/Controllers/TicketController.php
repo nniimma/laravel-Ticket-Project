@@ -17,7 +17,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets =  DB::select('select * from tickets');
+        $tickets =  Ticket::all();
         return view('dashboard', ['tickets' => $tickets]);
     }
 

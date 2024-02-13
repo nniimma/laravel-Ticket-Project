@@ -10,7 +10,7 @@
             @forelse ($tickets as $ticket)
                 <div class="text-white flex justify-between py-4">
                     <a href="{{ route('ticket.show', $ticket->id) }}">{{ $ticket->title }}</a>
-                    <p>{{ $ticket->created_at }}</p>
+                    <p>{{ $ticket->created_at->diffForHumans() }}</p>
                 </div>
             @empty
                 <p class="text-white">You don't have any support ticket yet.</p>
