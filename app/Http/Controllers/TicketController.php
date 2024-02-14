@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Ticket;
 use App\Http\Requests\StoreTicketRequest;
 use App\Http\Requests\UpdateTicketRequest;
+use App\Models\User;
+use App\Notifications\TicketUpdatedNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -72,6 +74,14 @@ class TicketController extends Controller
     {
         // dd($request->except('attachment'));
         $ticket->update($request->except('attachment'));
+
+        if ($request->has('status')) {
+            // sending notification (we need to configurate emails as well):
+            $ticket->user->notify(new TicketUpdatedNotification($ticket));
+
+            //! to preview the email
+            // todo: return (new TicketUpdatedNotification($ticket))->toMail($user);
+        }
 
         if ($request->file('attachment')) {
             Storage::disk('public')->delete($ticket->attachment);
