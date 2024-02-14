@@ -19,7 +19,10 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets =  Ticket::all();
+        // using relationships to just get the tickets of the user which is logged in and if it is admin can see all the tickets:
+        $user = auth()->user();
+        // latest is the orderby
+        $tickets = $user->is_admin ? Ticket::latest()->get() : $user->tickets;
         return view('dashboard', ['tickets' => $tickets]);
     }
 
