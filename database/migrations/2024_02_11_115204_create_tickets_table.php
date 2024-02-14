@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\TicketStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('title')->requierd;
             $table->text('description')->requierd;
-            $table->string('status')->default('open');
+            $table->string('status')->default(TicketStatus::OPEN);
             $table->string('attachment')->nullable();
             //! constrained do the same job as: ->references('id')->on('users')
             $table->foreignId('user_id')->constrained();
